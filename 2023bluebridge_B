@@ -12,7 +12,6 @@ def normalize(dx, dy):
         dy = -dy
     return (dx, dy)
 
-
 n = int(input().strip())
 points = [tuple(map(int, input().split())) for _ in range(n)]
 ans = 0
