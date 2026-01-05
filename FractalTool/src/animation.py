@@ -30,6 +30,13 @@ class FractalAnimator:
             coloring_method: 着色方法
             max_iter: 最大迭代次数
         """
+        import os
+        
+        # 确保输出目录存在
+        directory = os.path.dirname(output_path)
+        if directory and not os.path.exists(directory):
+            os.makedirs(directory, exist_ok=True)
+        
         # 计算总帧数
         total_frames = int(duration * fps)
         
@@ -111,7 +118,7 @@ class FractalAnimator:
         else:
             raise ValueError(f"不支持的分形类型: {fractal_type}")
     
-    def julia_animation(self, width=800, height=600, duration=10, fps=30, output_path="../results/julia_animation.mp4",
+    def julia_animation(self, width=800, height=600, duration=10, fps=30, output_path="results/julia_animation.mp4",
                        c_start=-0.8+0.156j, c_end=0.285+0.01j):
         """生成朱利亚集合动画（c值变化）"""
         self.generate_animation(
@@ -128,7 +135,7 @@ class FractalAnimator:
             max_iter=100
         )
     
-    def mandelbrot_zoom_animation(self, width=800, height=600, duration=10, fps=30, output_path="../results/mandelbrot_zoom.mp4",
+    def mandelbrot_zoom_animation(self, width=800, height=600, duration=10, fps=30, output_path="results/mandelbrot_zoom.mp4",
                                  x_start=-2.5, x_end=0.27, y_start=-1.5, y_end=1.5,
                                  zoom_center=(-0.743643887037158704752191506114774, 0.131825904205311970493132056385139)):
         """生成曼德博集合缩放动画"""
@@ -163,7 +170,7 @@ class FractalAnimator:
             max_iter=100
         )
     
-    def burning_ship_animation(self, width=800, height=600, duration=10, fps=30, output_path="../results/burning_ship_animation.mp4"):
+    def burning_ship_animation(self, width=800, height=600, duration=10, fps=30, output_path="results/burning_ship_animation.mp4"):
         """生成燃烧船分形动画"""
         params_start = (-2.5, 1.5, -2.0, 1.0)
         params_end = (-1.8, -1.7, -0.1, 0.1)  # 聚焦到一个有趣的区域
@@ -182,7 +189,7 @@ class FractalAnimator:
             max_iter=100
         )
     
-    def lsystem_growth_animation(self, width=800, height=600, duration=5, fps=10, output_path="../results/lsystem_growth.mp4"):
+    def lsystem_growth_animation(self, width=800, height=600, duration=5, fps=10, output_path="results/lsystem_growth.mp4"):
         """生成分形植物生长动画"""
         self.generate_animation(
             fractal_type=FractalTypes.L_SYSTEM,
@@ -199,7 +206,7 @@ class FractalAnimator:
         )
     
     def generate_parameter_animation(self, fractal_type, param_name, param_range, width=800, height=600,
-                                   duration=10, fps=30, output_path="../results/parameter_animation.mp4"):
+                                   duration=10, fps=30, output_path="results/parameter_animation.mp4"):
         """生成参数变化动画"""
         # 根据参数名和范围生成分形动画
         pass

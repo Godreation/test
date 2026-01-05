@@ -148,6 +148,13 @@ class Renderer:
     
     def save_image(self, img, filename):
         """保存图像到文件"""
+        import os
+        
+        # 确保目录存在
+        directory = os.path.dirname(filename)
+        if directory and not os.path.exists(directory):
+            os.makedirs(directory, exist_ok=True)
+        
         if isinstance(img, np.ndarray):
             if len(img.shape) == 2:
                 img = Image.fromarray(img.astype(np.uint8))

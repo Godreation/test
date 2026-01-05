@@ -3,6 +3,58 @@ from numba import jit
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.ndimage import gaussian_filter
+import matplotlib
+import matplotlib.font_manager
+import platform
+import os
+
+# 设置中文字体支持
+def setup_chinese_font():
+    """设置中文字体支持"""
+    system = platform.system()
+    
+    if system == "Windows":
+        # Windows系统字体路径
+        font_paths = [
+            "C:\\Windows\\Fonts\\simhei.ttf",  # 黑体
+            "C:\\Windows\\Fonts\\simsun.ttc",  # 宋体
+            "C:\\Windows\\Fonts\\msyh.ttc",   # 微软雅黑
+        ]
+    elif system == "Darwin":  # macOS
+        font_paths = [
+            "/System/Library/Fonts/STHeiti Light.ttc",  # 黑体
+            "/System/Library/Fonts/STSong.ttf",         # 宋体
+        ]
+    else:  # Linux
+        font_paths = [
+            "/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf",
+            "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc",
+        ]
+    
+    # 查找可用的中文字体
+    available_font = None
+    for font_path in font_paths:
+        if os.path.exists(font_path):
+            available_font = font_path
+            break
+    
+    if available_font:
+        # 设置matplotlib字体
+        matplotlib.rcParams['font.family'] = 'sans-serif'
+        matplotlib.rcParams['font.sans-serif'] = [os.path.basename(available_font).split('.')[0]]
+        matplotlib.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
+        
+        # 添加字体到matplotlib字体管理器
+        try:
+            font_prop = matplotlib.font_manager.FontProperties(fname=available_font)
+            matplotlib.rcParams['font.family'] = font_prop.get_name()
+        except:
+            pass  # 如果添加失败，使用默认设置
+    
+    return available_font is not None
+
+# 初始化中文字体
+chinese_font_available = setup_chinese_font()
 
 class Fractal3D:
     """3D分形类"""
@@ -153,6 +205,11 @@ class Fractal3D:
             terrain: 2D高度图
             title: 图表标题
         """
+        # 设置中文字体
+        if chinese_font_available:
+            plt.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei', 'SimSun']
+            plt.rcParams['axes.unicode_minus'] = False
+        
         fig = plt.figure(figsize=(10, 8))
         ax = fig.add_subplot(111, projection='3d')
         
@@ -212,6 +269,11 @@ class Fractal3D:
             axis: 切片轴 ('x', 'y', 'z')
             title: 图表标题
         """
+        # 设置中文字体
+        if chinese_font_available:
+            plt.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei', 'SimSun']
+            plt.rcParams['axes.unicode_minus'] = False
+        
         # 获取切片
         if axis == 'x':
             slice_data = mandelbulb_vol[:, :, slice_index]

@@ -345,7 +345,13 @@ class FractalUI:
     def _on_save_click(self):
         """保存按钮点击事件"""
         if self.rendered_image is not None:
-            filename = f"../results/{self.current_fractal}_{pygame.time.get_ticks()}.png"
+            import os
+            # 使用相对路径，确保在项目根目录下创建results文件夹
+            filename = f"results/{self.current_fractal}_{pygame.time.get_ticks()}.png"
+            # 确保目录存在
+            directory = os.path.dirname(filename)
+            if directory and not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
             self.renderer.save_image(self.rendered_image, filename)
             print(f"图像已保存到: {filename}")
     
